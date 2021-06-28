@@ -1,13 +1,12 @@
 <template>
-  <div>
+  <div class="alinhar">
     <Header />
     <ListarPokemon />
   </div>
-
 </template>
 <script>
 import Header from "./Header.vue";
-import ListarPokemon from './ListarPokemons.vue'
+import ListarPokemon from "./ListarPokemons.vue";
 
 export default {
   name: "HelloWorld",
@@ -16,8 +15,8 @@ export default {
   },
   components: {
     Header,
-    ListarPokemon
-  }
+    ListarPokemon,
+  },
 };
 </script>
 
@@ -27,11 +26,6 @@ export default {
 .btn-secondary:focus {
   color: #333;
   text-shadow: none;
-}
-
-body {
-  text-shadow: 0 0.05rem 0.1rem rgba(0, 0, 0, 0.5);
-  box-shadow: inset 0 0 5rem rgba(0, 0, 0, 0.5);
 }
 
 .cover-container {
@@ -87,5 +81,10 @@ body {
 .centralizar-search {
   display: inline-block;
   padding-bottom: 3em;
+}
+
+.alinahr {
+  margin: 0 auto;
+  width: 50%; /* Valor da Largura */
 }
 </style>

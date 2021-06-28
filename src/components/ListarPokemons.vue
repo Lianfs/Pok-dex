@@ -1,26 +1,37 @@
 <template>
-  <div class="container-fluid" style="width: 60em; padding-top: 5em">
-    <div class="scrolling-wrapper row flex-row flex-nowrap mt-4 pb-4 pt-2">
-      <div
-        class="card-block border border-secondary"
-        v-for="(pokemon, index) in pokemons"
-        :key="'poke' + index"
-      >
-        <img
-          style="width: 96px; height: 96px"
-          :src="urlImages + pokemon.id + '.png'"
-          class="card-img-top"
-          alt="..."
-        />
-        <div class="card-body">
-          <h5 class="card-title">{{ pokemon.name }}</h5>
-          <p class="card-text"></p>
-          <a href="#" class="btn btn-dark">Detalhes</a>
+  <div class="main">
+      <div class="row">
+        <div
+          class="card-block border border-light"
+          v-for="(pokemon, index) in pokemons"
+          :key="'poke' + index"
+        >
+          <img
+            style="width: 96px; height: 96px;"
+            :src="urlImages + pokemon.id + '.png'"
+            class="card-img-top"
+            alt="..."
+          />
+          <div class="card-body">
+            <h5 class="card-title">{{ pokemon.name }}</h5>
+            <p class="card-text"></p>
+            <a href="#" class="btn btn-dark">Detalhes</a>
+          </div>
         </div>
       </div>
-    </div>
   </div>
+  <nav aria-label="Page navigation example" style="padding-top: 2em">
+    <ul class="pagination justify-content-center">
+      <li class="page-item disabled">
+        <button type="button" class="page-link">Anterior</button>
+      </li>
+      <li class="page-item">
+        <button type="button" @click="next()" class="page-link">Próximo</button>
+      </li>
+    </ul>
+  </nav>
 </template>
+
 <script>
 import axios from "axios";
 
@@ -31,16 +42,21 @@ export default {
       urlImages:
         "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/",
       pokemonDetails: [],
+      urlAtual: "",
+      proximaUrl: "https://pokeapi.co/api/v2/pokemon/?limit=20&offset=",
+      pokemonId: 20,
     };
   },
-  mounted() {
+  created() {
+    this.urlAtual = "https://pokeapi.co/api/v2/pokemon/";
     this.getPokemons();
   },
   methods: {
-    async getPokemons() {
-        axios.get("https://pokeapi.co/api/v2/pokemon/").then((resposta) => {
-          this.formatPokemonDetails(resposta.data);
-        }); 
+    getPokemons() {
+      axios.get(this.urlAtual).then((resposta) => {
+        this.formatPokemonDetails(resposta.data);
+        this.pokemonId += 20;
+      });
     },
     formatPokemonDetails(data) {
       data.results.forEach((pokemon) => {
@@ -56,17 +72,29 @@ export default {
     },
     definePokemonDetails(url) {
       axios.get(url).then((resposta) => {
-        console.log(resposta.data);
         this.pokemonDetails.push(resposta.data.base_experience);
       });
+    },
+    next() {
+      this.urlAtual = this.proximaUrl + this.pokemonId;
+      this.getPokemons();
     },
   },
 };
 </script>
 
 <style scoped>
-.scrolling-wrapper {
-  overflow-x: auto;
+.main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.row {
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 50em;
 }
 
 .card-block {
@@ -76,9 +104,8 @@ export default {
   background-position: center;
   background-size: cover;
   transition: all 0.2s ease-in-out !important;
-  border-radius: 24px;
-  margin: 10px;
   padding-top: 20px;
+  margin: 10px;
 }
 
 .card-block:hover {
@@ -88,15 +115,5 @@ export default {
 
 h5:first-letter {
   text-transform: capitalize;
-}
-
-.scroll-trigger {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100px;
-  font-size: 2em;
-  color: black;
 }
 </style>
