@@ -19,7 +19,6 @@
           "
         >
         </a>
-
         <ul
           class="
             nav
@@ -30,9 +29,7 @@
             mb-md-0
           "
         >
-         <img src="https://64.media.tumblr.com/tumblr_m3z8qpyRav1rvfawbo1_400.gif" style="width: 200px">
         </ul>
-
         <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
           <input
             type="search"

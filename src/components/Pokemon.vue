@@ -1,21 +1,64 @@
 <template>
   <div class="alinhar">
     <Header />
-    <ListarPokemon />
+    <ListarPokemon
+      :imageUrl="imageUrl"
+      :apiUrl="apiUrl"
+      @setPokemonUrl="setPokemonUrl"
+    />
+    <PokemonDetails
+      v-if="showDetail"
+      :pokemonUrl="pokemonUrl"
+      :imageUrl="imageUrl + pokemonId + '.png'"
+      :pokemonNome="pokemonNome"
+      :shineUrl="imageUrlShiny + pokemonId + '.png'"
+      @closeDetail="closeDetail"
+    />
   </div>
 </template>
 <script>
 import Header from "./Header.vue";
 import ListarPokemon from "./ListarPokemons.vue";
+import PokemonDetails from "./PokemonDetails.vue";
 
 export default {
-  name: "HelloWorld",
+  name: "Pokemon",
   props: {
     msg: String,
+  },
+  data: () => {
+    return {
+      imageUrl:
+        "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/",
+      imageUrlShiny: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/',
+      apiUrl: "https://pokeapi.co/api/v2/pokemon/",
+      pokemonUrl: "",
+      showDetail: false,
+      pokemonNome: "",
+      pokemonId: 0
+    };
   },
   components: {
     Header,
     ListarPokemon,
+    PokemonDetails,
+  },
+  methods: {
+    setPokemonUrl(url) {
+      this.pokemonUrl = url;
+      this.pokemonNome = url.data;
+      this.pokemonId = url
+          .split("/")
+          .filter(function (part) {
+            return !!part;
+          })
+          .pop();
+      this.showDetail = true;
+    },
+    closeDetail() {
+      this.pokemonUrl = "";
+      this.showDetail = false;
+    },
   },
 };
 </script>
@@ -85,6 +128,6 @@ export default {
 
 .alinahr {
   margin: 0 auto;
-  width: 50%; /* Valor da Largura */
+  width: 50%;
 }
 </style>
