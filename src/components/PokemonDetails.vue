@@ -12,6 +12,28 @@
         <div class="circle2"></div>
         <div class="circle3"></div>
         <div class="bordaVisorPokemon">
+          <div
+            class="circle-red"
+            style="margin-top: 10px; margin-left: 90px; border: 1px solid black"
+          ></div>
+          <div
+            class="circle-red"
+            style="
+              margin-top: 10px;
+              margin-left: 120px;
+              border: 1px solid black;
+            "
+          ></div>
+          <div
+            class="circle-red"
+            style="
+              margin-top: 173px;
+              margin-left: 15px;
+              border: 1px solid black;
+              width: 15px;
+              height: 15px;
+            "
+          ></div>
           <div class="visorPokemon">
             <img
               :src="shineUrl"
@@ -34,6 +56,53 @@
             />
           </div>
         </div>
+        <div
+          style="
+            display: flex;
+            position: absolute;
+            top: 0;
+            margin-top: 390px;
+            left: 0;
+            margin-left: 75px;
+            width: 80px;
+            height: 50px;
+            background: green;
+            border: 1px solid black;
+            border-radius: 3px;
+          "
+        ></div>
+        <div
+          style="
+            display: flex;
+            position: absolute;
+            top: 0;
+            margin-top: 350px;
+            left: 0;
+            margin-left: 70px;
+            width: 40px;
+            height: 8px;
+            background: #8b0000;
+            border: 1px solid black;
+            border-radius: 3px;
+            box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.24);
+          "
+        ></div>
+        <div
+          style="
+            display: flex;
+            position: absolute;
+            top: 0;
+            margin-top: 350px;
+            left: 0;
+            margin-left: 130px;
+            width: 40px;
+            height: 8px;
+            background: #00008b;
+            border: 1px solid black;
+            border-radius: 3px;
+            box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.24);
+          "
+        ></div>
         <div class="junta">
           <div
             class="junta-quadrado"
@@ -92,7 +161,6 @@
                 transform: rotate(135deg);
               "
               @click="toggle()"
-
             ></div>
           </div>
           <div
@@ -164,7 +232,7 @@
               margin-top: 34px;
             "
           >
-            nome: {{ pokemon }}
+            nome: {{ pokemon.name }}
           </h6>
           <h6
             style="
@@ -191,6 +259,34 @@
             peso: {{ weight }}kg
           </h6>
         </div>
+        <div class="informacoes row" style="margin-top: 300px;">
+          <h6
+            style="
+              display: flex;
+              position: relative;
+              left: 0;
+              margin-left: 7px;
+              margin-top: 15px;
+            "
+          >
+            Habilidades:
+          </h6>
+          <div
+            style="
+              display: flex;
+              position: relative;
+              left: 0;
+              margin-left: 7px;
+              margin-top: -5px;
+            "
+            v-for="(value, index) in pokemon.abilities"
+            :key="'value' + index"
+          >
+            <h6>
+              {{ value.ability.name }}
+            </h6>
+          </div>
+        </div>
       </div>
     </div>
   </transition>
@@ -207,16 +303,15 @@ export default {
       pokemon: "",
       height: 0,
       weight: 0,
-      id: 0
+      id: 0,
     };
   },
   methods: {
     defineInformations(url) {
       axios.get(url).then((resposta) => {
-        console.log(resposta.data);
-        this.pokemon = resposta.data.name;
-        this.height = (resposta.data.height)/10;
-        this.weight = (resposta.data.weight)/10;
+        this.pokemon = resposta.data;
+        this.height = resposta.data.height / 10;
+        this.weight = resposta.data.weight / 10;
         this.id = resposta.data.id;
       });
     },
@@ -427,6 +522,17 @@ export default {
   margin-top: 15px;
   margin-left: 140px;
   box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.24);
+}
+
+.circle-red {
+  display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: red;
 }
 
 .container-botao {

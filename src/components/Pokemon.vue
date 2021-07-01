@@ -1,10 +1,17 @@
 <template>
   <div class="alinhar">
-    <Header />
+    <Header
+      :apiUrl="apiUrl"
+      :imageUrl="imageUrl + pokemonId + '.png'"
+      @playSound="playSound"
+      @setPokemonUrlSearch="setPokemonUrlSearch"
+    />
     <ListarPokemon
       :imageUrl="imageUrl"
       :apiUrl="apiUrl"
       @setPokemonUrl="setPokemonUrl"
+      @playSound="playSound"
+      @closeDetail="closeDetail"
     />
     <PokemonDetails
       v-if="showDetail"
@@ -14,12 +21,14 @@
       :shineUrl="imageUrlShiny + pokemonId + '.png'"
       @closeDetail="closeDetail"
     />
+    <audio id="audio" src="https://drive.google.com/uc?authuser=0&id=16kyUfDROFC21ifl05jgTAOPDGhAvqVME&export=download" autoplay="false"></audio>
   </div>
 </template>
 <script>
 import Header from "./Header.vue";
 import ListarPokemon from "./ListarPokemons.vue";
 import PokemonDetails from "./PokemonDetails.vue";
+import axios from "axios";
 
 export default {
   name: "Pokemon",
@@ -30,12 +39,13 @@ export default {
     return {
       imageUrl:
         "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/",
-      imageUrlShiny: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/',
+      imageUrlShiny:
+        "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/",
       apiUrl: "https://pokeapi.co/api/v2/pokemon/",
       pokemonUrl: "",
       showDetail: false,
       pokemonNome: "",
-      pokemonId: 0
+      pokemonId: 0,
     };
   },
   components: {
@@ -48,17 +58,30 @@ export default {
       this.pokemonUrl = url;
       this.pokemonNome = url.data;
       this.pokemonId = url
-          .split("/")
-          .filter(function (part) {
-            return !!part;
-          })
-          .pop();
+        .split("/")
+        .filter(function (part) {
+          return !!part;
+        })
+        .pop();
+      this.showDetail = true;
+    },
+    setPokemonUrlSearch(url) {
+      this.pokemonUrl = url;
+      this.pokemonNome = url.data;
+      axios.get(url).then((resposta) => {
+        this.pokemonId = resposta.data.id;
+        console.log(resposta.data.id);
+      });
       this.showDetail = true;
     },
     closeDetail() {
       this.pokemonUrl = "";
       this.showDetail = false;
     },
+    playSound() {
+        var audio = document.getElementById("audio");
+        audio.play();
+    }
   },
 };
 </script>

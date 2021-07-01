@@ -1,11 +1,11 @@
 <template>
   <div class="main">
-    <div class="row">
+    <div class="row" style="background: white;">
       <div
         class="card-block border border-light"
         v-for="(pokemon, index) in pokemons"
         :key="'poke' + index"
-        @click="setPokemonUrl(pokemon.url)"
+        @click="setPokemonUrl(pokemon.url); playSound()"
       >
         <img
           style="width: 96px; height: 96px"
@@ -136,6 +136,9 @@ export default {
     },
     setPokemonUrl(url) {
       this.$emit("setPokemonUrl", url);
+    },
+    playSound() {
+      this.$emit("playSound");
     },
   },
 };
