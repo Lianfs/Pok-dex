@@ -1,4 +1,4 @@
-# site-niduu-bootstrap
+# Pokédex
 
 ## Project setup
 ```
